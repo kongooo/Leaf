@@ -1,5 +1,7 @@
 function SetupCanvas(canvas) {
+    window.devicePixelRatio = 1.25;
     let dpr = window.devicePixelRatio;
+    console.log(dpr);
     let rect = canvas.getBoundingClientRect();
     canvas.width = rect.width * dpr;
     canvas.height = rect.height * dpr;
