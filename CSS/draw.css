@@ -27,6 +27,14 @@ body {
     box-shadow: 0px 0px 20px 10px rgb(254, 241, 158);
 }
 
+.moon {
+    width: 100px;
+    height: 100px;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+}
+
 .ground {
     height: 45%;
     width: 100%;
