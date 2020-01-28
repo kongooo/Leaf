@@ -16,11 +16,15 @@ body {
 }
 
 .sun-canvas {
-    height: 100px;
-    width: 100px;
+    height: 60px;
+    width: 60px;
+    border: 0px solid rgb(253, 236, 127);
+    border-radius: 50%;
+    background-color: rgb(254, 238, 138);
     position: fixed;
     top: 0px;
     left: 0px;
+    box-shadow: 0px 0px 20px 10px rgb(254, 241, 158);
 }
 
 .ground {

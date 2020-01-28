@@ -38,7 +38,6 @@ function UpdateSun() {
     let deg = GetSunDeg();
     let x = center_x + sun_r * Math.sin(deg);
     let y = center_y + sun_r * Math.cos(deg);
-    console.log(x, y);
     SetSunPos(sun, x, y);
 }
 
@@ -79,9 +78,5 @@ let center_y = document.body.clientHeight * 0.55 + 85 + Math.tan(5 * Math.PI / 1
 let sun_r = center_y;
 
 let sun = document.querySelector(".sun-canvas");
-let sun_ctx = SetupCanvas(sun);
-sun_ctx.arc(50, 50, sun_radius, 0, Math.PI * 2, true);
-sun_ctx.fillStyle = "rgb(253, 236, 127)";
-sun_ctx.fill();
 UpdateSun();
 setInterval(UpdateSun, 60000);
