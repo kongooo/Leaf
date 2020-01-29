@@ -1,7 +1,6 @@
 function SetupCanvas(canvas) {
     window.devicePixelRatio = 1.25;
     let dpr = window.devicePixelRatio;
-    console.log(dpr);
     let rect = canvas.getBoundingClientRect();
     canvas.width = rect.width * dpr;
     canvas.height = rect.height * dpr;
@@ -353,7 +352,7 @@ function GetV(day_color, bright, hsv_per) {
         per = (GetDayPercent() - day_stt) / (day_end - day_stt) * (1 - hsv_per) + hsv_per;
     else
         per = 1 - (GetDayPercent() - night_stt) / (night_end - night_stt) * (1 - hsv_per);
-    let v = (day_hsv.c / 255) * per;
+    let v = day_hsv.c * per;
     return hsv2rgb(new color(day_hsv.a, day_hsv.b, v));
 }
 
@@ -374,9 +373,9 @@ function ChangeDay() {
     if (per <= day_stt)
         ApplyDay(sky_dark, ground_dark, leaf_dark);
     else if (per < day_end) {
-        let sky_c = GetV(sky_dark, true, sky_per),
-            ground_c = GetV(ground_dark, true, sky_per),
-            leaf_c = GetV(leaf_dark, true, leaf_per);
+        let sky_c = GetV(sky_bright, true, sky_per),
+            ground_c = GetV(ground_bright, true, sky_per),
+            leaf_c = GetV(leaf_bright, true, leaf_per);
         ApplyDay(sky_c, ground_c, leaf_c);
     } else if (per <= night_stt) {
         ApplyDay(sky_bright, ground_bright, leaf_bright);
