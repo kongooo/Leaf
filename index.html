@@ -10,12 +10,29 @@
 </head>
 
 <body>
-    <canvas class="draw-canvas" width="500" height="550"></canvas>
+    <script src="js/CreateCL.js"></script>
+    <canvas class="draw-canvas" width="500" height="550" style="left: 500px; top: 200px;"></canvas>
     <div class="sun-canvas"></div>
     <canvas class="moon" width="125" height="125"></canvas>
-    <div class="ground"></div>
 
-    <script src="JS/draw.js"></script>
+    <div class="clannad" style="color: rgb(181, 221, 223); border-color: rgb(93, 160, 165); top: 200px; left: 300px;">
+        <canvas class="cl-body" width="100" height="80"></canvas>
+        <canvas class=" cl-eye " width="90 " height="70 "></canvas>
+    </div>
+
+    <div class="clannad " style="color: rgb(247, 222, 223); border-color: rgb(213, 165, 160); top: 300px; left: 400px; ">
+        <canvas class="cl-body " width="100 " height="80 "></canvas>
+        <canvas class="cl-eye " width="90 " height="70 "></canvas>
+    </div>
+
+    <div class="ground " style="height: 400px; top: 0; "></div>
+
+    <script src="JS/tool.js "></script>
+    <script src="js/init.js "></script>
+    <script src="JS/clannad.js "></script>
+    <script src="JS/draw_func.js "></script>
+    <script src="js/draw.js "></script>
 </body>
+
 
 </html>

@@ -1,0 +1,192 @@
+let cl_bodys = document.querySelectorAll(".cl-body"),
+    cl_eyes = document.querySelectorAll(".cl-eye");
+
+let cl_count = cl_bodys.length;
+
+let body_center = new point(55, 55),
+    body_radius = 50,
+    stt_deg = angle2deg(0),
+    end_deg = angle2deg(180),
+    offset = 20,
+    second_offset = 8,
+    third_offset = 20,
+    vertical_offset = 5,
+    cl_dark_per = 0.3,
+
+    eye_offset = 7,
+    eye_v_offset = 20,
+    eye_length = 17,
+    eye_color = "rgb(77,77,77)",
+    eye_dark_color,
+    eye_current,
+    eye_radius = 20,
+    eye_vertical = 15;
+
+let clannads = new Array(cl_count),
+    bodys_ctx = new Array(cl_count),
+    eyes_ctx = new Array(cl_count),
+    body_color = new Array(cl_count),
+    border_color = new Array(cl_count),
+    center_pos = new Array(cl_count),
+    eye_center = new Array(cl_count),
+    body_dark_color = new Array(cl_count),
+    border_dark_color = new Array(cl_count);
+
+function CalculateDarkColors(i) {
+    let temp_hsv = rgb2hsv(rgb2color(body_color[i]));
+    temp_hsv.c *= cl_dark_per;
+    body_dark_color[i] = color2rgb(hsv2rgb(temp_hsv));
+
+    temp_hsv = rgb2hsv(rgb2color(border_color[i]));
+    temp_hsv.c *= cl_dark_per;
+    border_dark_color[i] = color2rgb(hsv2rgb(temp_hsv));
+}
+
+function CalculateEyeDark() {
+    let temp_hsv = rgb2hsv(rgb2color(eye_color));
+    temp_hsv.c *= cl_dark_per;
+    eye_dark_color = color2rgb(hsv2rgb(temp_hsv));
+}
+
+function init() {
+    initPos();
+    for (let i = 0; i < cl_count; i++) {
+        clannads[i] = cl_bodys[i].parentNode;
+        initClannad(i);
+        bodys_ctx[i] = SetupCanvas(cl_bodys[i]);
+        eyes_ctx[i] = SetupCanvas(cl_eyes[i]);
+        body_color[i] = clannads[i].style.color;
+        eye_center[i] = new point(55, 55);
+        border_color[i] = clannads[i].style.borderColor;
+        center_pos[i] = new point(parseInt(clannads[i].style.left) + body_center.x / window.devicePixelRatio, parseInt(clannads[i].style.top) + body_center.y / window.devicePixelRatio);
+        CalculateEyeDark();
+        CalculateDarkColors(i);
+    }
+}
+
+
+function UpdateCLColor(bodys_color, borders_color) {
+    for (let i = 0; i < cl_count; i++) {
+        bodys_ctx[i].strokeStyle = borders_color[i];
+        bodys_ctx[i].fillStyle = bodys_color[i];
+        bodys_ctx[i].fill("evenodd");
+        bodys_ctx[i].stroke();
+    }
+}
+
+
+function DrawBody() {
+    for (let i = 0; i < cl_count; i++) {
+        bodys_ctx[i].beginPath();
+        bodys_ctx[i].arc(body_center.x, body_center.y, body_radius, stt_deg, end_deg, true);
+        bodys_ctx[i].bezierCurveTo(body_center.x - body_radius, body_center.y + offset - vertical_offset, body_center.x - body_radius + second_offset, body_center.y + offset, body_center.x - body_radius + third_offset, body_center.y + offset);
+        bodys_ctx[i].lineTo(body_center.x + body_radius - third_offset, body_center.y + offset);
+        bodys_ctx[i].bezierCurveTo(body_center.x + body_radius - second_offset, body_center.y + offset, body_center.x + body_radius, body_center.y + offset - vertical_offset, body_center.x + body_radius, body_center.y);
+        bodys_ctx[i].lineWidth = 3;
+        bodys_ctx[i].closePath();
+        bodys_ctx[i].lineJoin = 'round';
+        DrawEye(i);
+    }
+
+    ChangeEyeColor(eye_color);
+}
+
+function DrawEye(i) {
+    eyes_ctx[i].beginPath();
+    eyes_ctx[i].moveTo(eye_center[i].x - eye_offset, eye_center[i].y - eye_v_offset);
+    eyes_ctx[i].lineTo(eye_center[i].x - eye_offset, eye_center[i].y - eye_v_offset + eye_length);
+    eyes_ctx[i].moveTo(eye_center[i].x + eye_offset, eye_center[i].y - eye_v_offset);
+    eyes_ctx[i].lineTo(eye_center[i].x + eye_offset, eye_center[i].y - eye_v_offset + eye_length);
+    eyes_ctx[i].lineWidth = 3;
+    eyes_ctx[i].lineCap = 'round';
+}
+
+function ChangeEyeColor(c) {
+    for (let i = 0; i < cl_count; i++) {
+        eyes_ctx[i].strokeStyle = c;
+        eyes_ctx[i].stroke();
+    }
+}
+
+
+function GetEyePos(i, mouse_pos) {
+    let minus_vector = point_minus(mouse_pos, center_pos[i]);
+    let len = Math.sqrt(minus_vector.x * minus_vector.x + minus_vector.y * minus_vector.y);
+    let result;
+    if (len <= eye_radius)
+        result = World2Eye(mouse_pos, i);
+    else {
+        let temp_vector = new point(minus_vector.x / len, minus_vector.y / len);
+        result = World2Eye(new point(center_pos[i].x + eye_radius * temp_vector.x, center_pos[i].y + eye_radius * temp_vector.y), i);
+    }
+    if (result.y < body_center.y - eye_vertical)
+        result.y = body_center.y - eye_vertical;
+    else if (result.y > body_center.y + eye_vertical)
+        result.y = body_center.y + eye_vertical;
+    return result;
+}
+
+function World2Eye(world_pos, i) {
+    return new point((world_pos.x - parseInt(clannads[i].style.left)) * window.devicePixelRatio, (world_pos.y - parseInt(clannads[i].style.top)) * window.devicePixelRatio);
+}
+
+function ControlEyes() {
+    for (let i = 0; i < cl_count; i++) {
+        eyes_ctx[i].clearRect(0, 0, cl_eyes[i].width, cl_eyes[i].height);
+        DrawEye(i);
+        eye_center[i] = GetEyePos(i, new point(event.pageX, event.pageY));
+    }
+    ChangeEyeColor(eye_current);
+}
+
+let left_pos, right_pos;
+
+function initPos() {
+    let temp = (document.body.clientWidth / 2) * Math.tan(angle2deg(5));
+    left_pos = new point(100, document.body.clientHeight / 2 + temp);
+    right_pos = new point(document.body.clientWidth - 100, document.body.clientHeight / 2 - temp);
+}
+
+function judgePos(p) {
+    let c = left_pos.y,
+        a = document.body.clientWidth,
+        b = right_pos.y;
+
+    if (p.x > left_pos.x && p.x < right_pos.x && p.y < document.body.clientHeight - 100 && (b - c) * p.x < a * (p.y - c))
+        return true;
+    else
+        return false;
+}
+
+function GetRandom(min, max) {
+    return parseInt(Math.random() * (max - min) + min);
+}
+
+function GetRandomePos() {
+    return new point(GetRandom(100, document.body.clientWidth - 100), GetRandom(right_pos.y, document.body.clientHeight - 100));
+}
+
+function SetCLPos(p, i) {
+    clannads[i].style.left = p.x + "px";
+    clannads[i].style.top = p.y + 30 + "px";
+}
+
+function initClannad(i) {
+    let random_pos = GetRandomePos();
+    while (judgePos(random_pos) == false) {
+        random_pos = GetRandomePos();
+    }
+    SetCLPos(random_pos, i);
+}
+
+
+let cl_move = false;
+
+init();
+DrawBody();
+UpdateCLColor(body_color, border_color);
+
+
+document.addEventListener('mousemove', event => {
+    ControlEyes();
+})

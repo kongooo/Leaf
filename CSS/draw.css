@@ -1,3 +1,8 @@
+html {
+    height: 100%;
+    width: 100%;
+}
+
 body {
     margin: 0;
     width: 100%;
@@ -9,10 +14,8 @@ body {
     height: 500px;
     width: 500px;
     display: block;
-    margin: 0 auto;
-    margin-top: 150px;
-    position: relative;
-    z-index: 1;
+    position: fixed;
+    z-index: 2;
 }
 
 .sun-canvas {
@@ -36,10 +39,31 @@ body {
 }
 
 .ground {
-    height: 45%;
     width: 100%;
     position: fixed;
-    bottom: -85px;
     background-color: rgb(247, 237, 229);
     transform: skewY(-5deg);
+}
+
+.clannad {
+    height: 80px;
+    width: 100px;
+    position: fixed;
+    z-index: 1;
+}
+
+.cl-body {
+    width: 100px;
+    height: 80px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+
+.cl-eye {
+    height: 70px;
+    width: 90px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
 }
