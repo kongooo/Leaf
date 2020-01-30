@@ -1,26 +1,9 @@
 let cl_bodys = document.querySelectorAll(".cl-body"),
     cl_eyes = document.querySelectorAll(".cl-eye");
 
-let cl_count = cl_bodys.length;
-
-let body_center = new point(55, 55),
-    body_radius = 50,
-    stt_deg = angle2deg(0),
-    end_deg = angle2deg(180),
-    offset = 20,
-    second_offset = 8,
-    third_offset = 20,
-    vertical_offset = 5,
-    cl_dark_per = 0.3,
-
-    eye_offset = 7,
-    eye_v_offset = 20,
-    eye_length = 17,
-    eye_color = "rgb(77,77,77)",
-    eye_dark_color,
-    eye_current,
-    eye_radius = 20,
-    eye_vertical = 15;
+let cl_count = cl_bodys.length,
+    cl_scale_max = 1.1,
+    cl_scale_min = 0.6;
 
 let clannads = new Array(cl_count),
     bodys_ctx = new Array(cl_count),
@@ -49,19 +32,24 @@ function CalculateEyeDark() {
 }
 
 function init() {
-    initPos();
     for (let i = 0; i < cl_count; i++) {
         clannads[i] = cl_bodys[i].parentNode;
-        initClannad(i);
         bodys_ctx[i] = SetupCanvas(cl_bodys[i]);
         eyes_ctx[i] = SetupCanvas(cl_eyes[i]);
         body_color[i] = clannads[i].style.color;
         eye_center[i] = new point(55, 55);
         border_color[i] = clannads[i].style.borderColor;
         center_pos[i] = new point(parseInt(clannads[i].style.left) + body_center.x / window.devicePixelRatio, parseInt(clannads[i].style.top) + body_center.y / window.devicePixelRatio);
+        SetScale(i);
         CalculateEyeDark();
         CalculateDarkColors(i);
     }
+}
+
+function SetScale(i) {
+    let temp_scale = Math.random() * (cl_scale_max - cl_scale_min) + cl_scale_min;
+    bodys_ctx[i].scale(temp_scale, temp_scale);
+    eyes_ctx[i].scale(temp_scale, temp_scale);
 }
 
 
@@ -137,46 +125,6 @@ function ControlEyes() {
         eye_center[i] = GetEyePos(i, new point(event.pageX, event.pageY));
     }
     ChangeEyeColor(eye_current);
-}
-
-let left_pos, right_pos;
-
-function initPos() {
-    let temp = (document.body.clientWidth / 2) * Math.tan(angle2deg(5));
-    left_pos = new point(100, document.body.clientHeight / 2 + temp);
-    right_pos = new point(document.body.clientWidth - 100, document.body.clientHeight / 2 - temp);
-}
-
-function judgePos(p) {
-    let c = left_pos.y,
-        a = document.body.clientWidth,
-        b = right_pos.y;
-
-    if (p.x > left_pos.x && p.x < right_pos.x && p.y < document.body.clientHeight - 100 && (b - c) * p.x < a * (p.y - c))
-        return true;
-    else
-        return false;
-}
-
-function GetRandom(min, max) {
-    return parseInt(Math.random() * (max - min) + min);
-}
-
-function GetRandomePos() {
-    return new point(GetRandom(100, document.body.clientWidth - 100), GetRandom(right_pos.y, document.body.clientHeight - 100));
-}
-
-function SetCLPos(p, i) {
-    clannads[i].style.left = p.x + "px";
-    clannads[i].style.top = p.y + 30 + "px";
-}
-
-function initClannad(i) {
-    let random_pos = GetRandomePos();
-    while (judgePos(random_pos) == false) {
-        random_pos = GetRandomePos();
-    }
-    SetCLPos(random_pos, i);
 }
 
 

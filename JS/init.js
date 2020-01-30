@@ -28,7 +28,8 @@ let old_pos, new_pos, mouse_dir;
 let log = false,
     leaf_draw = false;
 
-let leaf_radius = 40;
+let leaf_radius = 40,
+    leaf_height = 480;
 
 let my_leaf = {
 
@@ -37,7 +38,7 @@ let my_leaf = {
     points_2: new Array(370 + x_displace, 300 + y_displace, 370 + x_displace, 280 + y_displace, top_right.x, top_right.y),
     points_3: new Array(350 + x_displace, 100 + y_displace, 350 + x_displace, 100 + y_displace, 270 + x_displace, 180 + y_displace),
     points_4: new Array(230 + x_displace, 60 + y_displace, 230 + x_displace, 60 + y_displace, top_left.x, top_left.y),
-    points_5: new Array(247 + x_displace, 480 + y_displace, 257 + x_displace, 475 + y_displace, 267 + x_displace, 240 + y_displace),
+    points_5: new Array(247 + x_displace, leaf_height + y_displace, 257 + x_displace, 475 + y_displace, 267 + x_displace, 240 + y_displace),
 
     speed: 1,
 
