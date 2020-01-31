@@ -6,15 +6,15 @@ function GetDayPercent() {
     return deg;
 }
 
-function UpdateSun() {
-    let deg = GetDayPercent() * Math.PI * 2;
+function UpdateSun(per) {
+    let deg = per * Math.PI * 2;
     let x = center_x + sun_r * Math.sin(deg);
     let y = center_y + sun_r * Math.cos(deg);
     SetPos(sun, x, y);
 }
 
-function UpdateMoon() {
-    let deg = GetDayPercent() * Math.PI * 2;
+function UpdateMoon(per) {
+    let deg = per * Math.PI * 2;
     let x = center_x - sun_r * Math.sin(deg);
     let y = center_y - sun_r * Math.cos(deg);
     SetPos(moon_canvas, x, y);
@@ -73,13 +73,13 @@ function UpdateEndPos() {
 }
 
 
-function GetV(day_color, bright, hsv_per) {
+function GetV(day_color, bright, hsv_per, day_per) {
     let day_hsv = rgb2hsv(day_color);
     let per;
     if (bright)
-        per = (GetDayPercent() - day_stt) / (day_end - day_stt) * (1 - hsv_per) + hsv_per;
+        per = (day_per - day_stt) / (day_end - day_stt) * (1 - hsv_per) + hsv_per;
     else
-        per = 1 - (GetDayPercent() - night_stt) / (night_end - night_stt) * (1 - hsv_per);
+        per = 1 - (day_per - night_stt) / (night_end - night_stt) * (1 - hsv_per);
     let v = day_hsv.c * per;
     return hsv2rgb(new color(day_hsv.a, day_hsv.b, v));
 }
@@ -98,40 +98,64 @@ function ApplyDay(sky_color, ground_color, leaf_color, bodys_color, borders_colo
     ChangeEyeColor(eye_current);
 }
 
-function GetCLColors(CL_colors, bright) {
+function GetCLColors(CL_colors, bright, per) {
     let temp = new Array(CL_colors.length);
     for (let i = 0; i < CL_colors.length; i++) {
-        temp[i] = color2rgb(GetV(rgb2color(CL_colors[i]), bright, cl_dark_per));
+        temp[i] = color2rgb(GetV(rgb2color(CL_colors[i]), bright, cl_dark_per, per));
     }
     return temp;
 }
 
-function GetEyeColor(e_color, bright) {
-    return color2rgb(GetV(rgb2color(e_color), bright, cl_dark_per));
+function GetEyeColor(e_color, bright, per) {
+    return color2rgb(GetV(rgb2color(e_color), bright, cl_dark_per, per));
 }
 
-function ChangeDay() {
-    let per = GetDayPercent();
-    if (per <= day_stt)
-        ApplyDay(sky_dark, ground_dark, leaf_dark, body_dark_color, border_dark_color, eye_dark_color);
-    else if (per < day_end) {
-        let sky_c = GetV(sky_bright, true, sky_per),
-            ground_c = GetV(ground_bright, true, sky_per),
-            leaf_c = GetV(leaf_bright, true, leaf_per),
-            body_color_c = GetCLColors(body_color, true),
-            border_color_c = GetCLColors(border_color, true),
-            eye_c = GetEyeColor(eye_color, true);
-        ApplyDay(sky_c, ground_c, leaf_c, body_color_c, border_color_c, eye_c);
+let sky_c,
+    ground_c,
+    leaf_c,
+    body_color_c,
+    border_color_c,
+    eye_c;
+
+function ChangeDay(per) {
+    if (per <= day_stt) {
+        sky_c = sky_dark;
+        ground_c = ground_dark;
+        leaf_c = leaf_dark;
+        body_color_c = body_dark_color;
+        border_color_c = border_dark_color;
+        eye_c = eye_dark_color;
+    } else if (per < day_end) {
+        sky_c = GetV(sky_bright, true, sky_per, per);
+        ground_c = GetV(ground_bright, true, sky_per, per);
+        leaf_c = GetV(leaf_bright, true, leaf_per, per);
+        body_color_c = GetCLColors(body_color, true, per);
+        border_color_c = GetCLColors(border_color, true, per);
+        eye_c = GetEyeColor(eye_color, true, per);
     } else if (per <= night_stt) {
-        ApplyDay(sky_bright, ground_bright, leaf_bright, body_color, border_color, eye_color);
+        sky_c = sky_bright;
+        ground_c = ground_bright;
+        leaf_c = leaf_bright;
+        body_color_c = body_color;
+        border_color_c = border_color;
+        eye_c = eye_color;
     } else if (per < night_end) {
-        let sky_c = GetV(sky_bright, false, sky_per),
-            ground_c = GetV(ground_bright, false, sky_per),
-            leaf_c = GetV(leaf_bright, false, leaf_per),
-            body_color_c = GetCLColors(body_color, false),
-            border_color_c = GetCLColors(border_color, false);
-        eye_c = GetEyeColor(eye_color, false);
-        ApplyDay(sky_c, ground_c, leaf_c, body_color_c, border_color_c, eye_c);
-    } else
-        ApplyDay(sky_dark, ground_dark, leaf_dark, body_dark_color, border_dark_color, eye_dark_color);
+        sky_c = GetV(sky_bright, false, sky_per, per);
+        ground_c = GetV(ground_bright, false, sky_per, per);
+        leaf_c = GetV(leaf_bright, false, leaf_per, per);
+        body_color_c = GetCLColors(body_color, false, per);
+        border_color_c = GetCLColors(border_color, false, per);
+        eye_c = GetEyeColor(eye_color, false, per);
+    } else {
+        sky_c = sky_dark;
+        ground_c = ground_dark;
+        leaf_c = leaf_dark;
+        body_color_c = body_dark_color;
+        border_color_c = border_dark_color;
+        eye_c = eye_dark_color;
+    }
+
+    ApplyDay(sky_c, ground_c, leaf_c, body_color_c, border_color_c, eye_c);
+    UpdateMoon(per);
+    UpdateSun(per);
 }

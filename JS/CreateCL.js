@@ -93,10 +93,7 @@ function CreateCLDiv() {
     let temp_pos = GetNewPos();
     cl_temp.style.top = temp_pos.y + 30 + "px";
     cl_temp.style.left = temp_pos.x + "px";
-    let cl_pos_y = temp_pos.y + 30 + (body_center.y + offset) / window.devicePixelRatio,
-        leaf_pos_y = (document.body.clientHeight - leaf_canvas.clientHeight) / 2 + (leaf_height + y_displace) / window.devicePixelRatio;
-    if (cl_pos_y >= leaf_pos_y)
-        cl_temp.style.zIndex = 3;
+    cl_temp.style.zIndex = temp_pos.y + 30 + (body_center.y + offset) / window.devicePixelRatio;
     return cl_temp;
 }
 
