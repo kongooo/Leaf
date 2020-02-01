@@ -50,12 +50,20 @@ function CreateStar() {
     return stars;
 }
 
+function GetStarPath() {
+    let star_paths = new Array(star_count);
+    for (let i = 0; i < star_count; i++) {
+        star_paths[i] = stars[i].firstChild.firstChild;
+    }
+    return star_paths;
+}
+
 function GetStarColor(i) {
-    return (stars[i].firstChild.firstChild.getAttribute('fill'));
+    return (star_path[i].getAttribute('fill'));
 }
 
 function SetStarColor(i, c) {
-    stars[i].firstChild.firstChild.setAttribute('fill', c);
+    star_path[i].setAttribute('fill', c);
 }
 
 function UpdateRGBA(rgba, a) {
@@ -99,4 +107,5 @@ function SetStarTransparent() {
 
 let stars = CreateStar();
 let star_count = stars.length;
+let star_path = GetStarPath();
 let star_colors = initStarsColor();
