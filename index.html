@@ -13,6 +13,30 @@
     <canvas class="draw-canvas" width="500" height="550" style="left: 500px; top: 200px;"></canvas>
     <div class="sun-canvas"></div>
     <canvas class="moon" width="125" height="125"></canvas>
+    <div class="cloud-parent">
+        <div class="cloud">
+            <svg>
+                <defs>
+                    <filter id="cloud-shadow">
+                        <feDropShadow dx="0" dy="0" stdDeviation="1" flood-color="white" />
+                    </filter>
+                </defs>
+                <path fill="transparent" filter = "url(#cloud-shadow)" d="M4.94,11.12C5.23,11.12 5.5,11.16 5.76,11.23C5.77,9.09 7.5,7.35 9.65,7.35C11.27,7.35 12.67,8.35 13.24,9.77C13.83,9 14.74,8.53 15.76,8.53C17.5,8.53 18.94,9.95 18.94,11.71C18.94,11.95 18.91,12.2 18.86,12.43C19.1,12.34 19.37,12.29 19.65,12.29C20.95,12.29 22,13.35 22,14.65C22,15.95 20.95,17 19.65,17C18.35,17 6.36,17 4.94,17C3.32,17 2,15.68 2,14.06C2,12.43 3.32,11.12 4.94,11.12Z" />
+            </svg>
+        </div>
+    </div>
+    <div class="star-parent">
+        <div class="star">
+            <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+                <defs>
+                    <filter id="shadow">
+                        <feDropShadow dx="0" dy="0" stdDeviation="3" flood-color="#f1dd82"/>
+                    </filter>
+                </defs>
+                <path fill="transparent" filter = "url(#shadow)" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z" />
+            </svg>
+        </div>
+    </div>
 
     <div class="ground " style="height: 400px; top: 0; "></div>
 
@@ -20,6 +44,8 @@
     <script src="JS/init.js "></script>
     <script src="JS/CreateCL.js"></script>
     <script src="JS/clannad.js "></script>
+    <script src="JS/star.js"></script>
+    <script src="JS/cloud.js"></script>
     <script src="JS/draw_func.js "></script>
     <script src="JS/draw.js "></script>
 </body>

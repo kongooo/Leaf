@@ -10,7 +10,7 @@ let day_interval = setInterval(function() {
 
 let speedup = false;
 let speedup_time = 0,
-    speedup_interval = 0.003;
+    speedup_interval = 0.002;
 
 document.addEventListener('keydown', event => {
     if (event.code == "KeyS") {

@@ -31,9 +31,7 @@ function LeafMove() {
     if (leaf_draw) {
         ctx.clearRect(0, 0, leaf_canvas.width, leaf_canvas.height);
         my_leaf.draw();
-        //my_leaf.DrawPath();
         let percent = GetPercent();
-        // console.log(percent);
         if (percent == 1) {
             move = false;
             log = false;
@@ -73,37 +71,14 @@ function UpdateEndPos() {
 }
 
 
-function GetV(day_color, bright, hsv_per, day_per) {
-    let day_hsv = rgb2hsv(day_color);
-    let per;
-    if (bright)
-        per = (day_per - day_stt) / (day_end - day_stt) * (1 - hsv_per) + hsv_per;
-    else
-        per = 1 - (day_per - night_stt) / (night_end - night_stt) * (1 - hsv_per);
-    let v = day_hsv.c * per;
-    return hsv2rgb(new color(day_hsv.a, day_hsv.b, v));
-}
-
-
-function ApplyDay(sky_color, ground_color, leaf_color, bodys_color, borders_color, e_color) {
+function ApplyDay(sky_color, ground_color, leaf_color, e_color) {
     sky.style.backgroundColor = color2rgb(sky_color);
     ground.style.backgroundColor = color2rgb(ground_color);
 
-    ctx.clearRect(0, 0, leaf_canvas.width, leaf_canvas.height);
-    ctx.fillStyle = color2rgb(leaf_color);
-    my_leaf.draw();
+    my_leaf.UpdateColor(leaf_color);
 
-    UpdateCLColor(bodys_color, borders_color);
     eye_current = e_color;
     ChangeEyeColor(eye_current);
-}
-
-function GetCLColors(CL_colors, bright, per) {
-    let temp = new Array(CL_colors.length);
-    for (let i = 0; i < CL_colors.length; i++) {
-        temp[i] = color2rgb(GetV(rgb2color(CL_colors[i]), bright, cl_dark_per, per));
-    }
-    return temp;
 }
 
 function GetEyeColor(e_color, bright, per) {
@@ -113,39 +88,47 @@ function GetEyeColor(e_color, bright, per) {
 let sky_c,
     ground_c,
     leaf_c,
-    body_color_c,
-    border_color_c,
     eye_c;
 
 function ChangeDay(per) {
+    let change = false;
     if (per <= day_stt) {
         sky_c = sky_dark;
         ground_c = ground_dark;
         leaf_c = leaf_dark;
-        body_color_c = body_dark_color;
-        border_color_c = border_dark_color;
         eye_c = eye_dark_color;
+        ApplyDay(sky_c, ground_c, leaf_c, eye_c);
+        SetCloudTransparent();
+        SetCLDrakColor();
+        change = false;
     } else if (per < day_end) {
         sky_c = GetV(sky_bright, true, sky_per, per);
-        ground_c = GetV(ground_bright, true, sky_per, per);
+        ground_c = GetV(ground_bright, true, ground_per, per);
         leaf_c = GetV(leaf_bright, true, leaf_per, per);
-        body_color_c = GetCLColors(body_color, true, per);
-        border_color_c = GetCLColors(border_color, true, per);
         eye_c = GetEyeColor(eye_color, true, per);
+        UpdateStarColor(true, per);
+        UpdateCloudColor(true, per);
+        UpdateCLColor(true, per);
+        change = true;
     } else if (per <= night_stt) {
         sky_c = sky_bright;
         ground_c = ground_bright;
         leaf_c = leaf_bright;
-        body_color_c = body_color;
-        border_color_c = border_color;
         eye_c = eye_color;
+        ApplyDay(sky_c, ground_c, leaf_c, eye_c);
+        SetStarTransparent();
+        SetCloudWhite();
+        SetCLBrightColor();
+        change = false;
     } else if (per < night_end) {
         sky_c = GetV(sky_bright, false, sky_per, per);
-        ground_c = GetV(ground_bright, false, sky_per, per);
+        ground_c = GetV(ground_bright, false, ground_per, per);
         leaf_c = GetV(leaf_bright, false, leaf_per, per);
-        body_color_c = GetCLColors(body_color, false, per);
-        border_color_c = GetCLColors(border_color, false, per);
         eye_c = GetEyeColor(eye_color, false, per);
+        UpdateStarColor(false, per);
+        UpdateCloudColor(false, per);
+        UpdateCLColor(false, per);
+        change = true;
     } else {
         sky_c = sky_dark;
         ground_c = ground_dark;
@@ -153,9 +136,16 @@ function ChangeDay(per) {
         body_color_c = body_dark_color;
         border_color_c = border_dark_color;
         eye_c = eye_dark_color;
+        ApplyDay(sky_c, ground_c, leaf_c, eye_c)
+        SetCloudTransparent();
+        SetCLDrakColor();
+        change = false;
     }
 
-    ApplyDay(sky_c, ground_c, leaf_c, body_color_c, border_color_c, eye_c);
+    if (change) {
+        ApplyDay(sky_c, ground_c, leaf_c, eye_c);
+    }
+
     UpdateMoon(per);
     UpdateSun(per);
 }

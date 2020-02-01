@@ -46,9 +46,9 @@ let my_leaf = {
 
     color: "rgb(73, 150, 162)",
 
-    DrawLeaf: function(path, leaf) {
+    DrawLeaf: function(path) {
         index = 0;
-        leaf.bezierCurveTo(path[index++], path[index++], path[index++], path[index++], path[index++], path[index++]);
+        ctx.bezierCurveTo(path[index++], path[index++], path[index++], path[index++], path[index++], path[index++]);
     },
 
     UpdatePoints: function() {
@@ -61,17 +61,22 @@ let my_leaf = {
     },
 
     draw: function() {
-        leaf = new Path2D();
-        leaf.moveTo(this.points_0[0], this.points_0[1]);
-        this.DrawLeaf(this.points_1, leaf);
-        leaf.lineTo(this.points_5[0], this.points_5[1]);
-        leaf.lineTo(this.points_5[2], this.points_5[3]);
-        leaf.lineTo(this.points_5[4], this.points_5[5]);
-        this.DrawLeaf(this.points_2, leaf);
-        this.DrawLeaf(this.points_3, leaf);
-        this.DrawLeaf(this.points_4, leaf);
+        ctx.beginPath();
+        ctx.moveTo(this.points_0[0], this.points_0[1]);
+        this.DrawLeaf(this.points_1);
+        ctx.lineTo(this.points_5[0], this.points_5[1]);
+        ctx.lineTo(this.points_5[2], this.points_5[3]);
+        ctx.lineTo(this.points_5[4], this.points_5[5]);
+        this.DrawLeaf(this.points_2);
+        this.DrawLeaf(this.points_3);
+        this.DrawLeaf(this.points_4);
 
-        ctx.fill(leaf);
+        ctx.fill();
+    },
+
+    UpdateColor: function(leaf_color) {
+        ctx.fillStyle = color2rgb(leaf_color);
+        ctx.fill();
     },
 
     DrawCircles: function(path) {
@@ -121,14 +126,15 @@ let day_stt = 4 / 24,
     day_end = 9 / 24,
     night_stt = 16 / 24,
     night_end = 20 / 24,
-    sky_per = 0.2,
+    sky_per = 0.1,
+    ground_per = 0.2,
     leaf_per = 0.3;
 
 let sky_bright = new color(214, 250, 255),
     ground_bright = new color(247, 237, 229),
     leaf_bright = new color(73, 150, 162),
     sky_dark = GetDarkColor(sky_bright, sky_per),
-    ground_dark = GetDarkColor(ground_bright, sky_per),
+    ground_dark = GetDarkColor(ground_bright, ground_per),
     leaf_dark = GetDarkColor(leaf_bright, leaf_per);
 
 let sky = document.body,

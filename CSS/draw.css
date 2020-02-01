@@ -28,6 +28,7 @@ body {
     top: 0px;
     left: 0px;
     box-shadow: 0px 0px 20px 10px rgb(254, 241, 158);
+    z-index: 1;
 }
 
 .moon {
@@ -36,6 +37,7 @@ body {
     position: fixed;
     top: 0px;
     left: 0px;
+    z-index: 1;
 }
 
 .ground {
@@ -43,6 +45,7 @@ body {
     position: fixed;
     background-color: rgb(247, 237, 229);
     transform: skewY(-5deg);
+    z-index: 2;
 }
 
 .clannad {
@@ -66,4 +69,45 @@ body {
     position: absolute;
     top: 0px;
     left: 0px;
+}
+
+.star-parent {
+    width: 100%;
+    height: 65%;
+    transform: rotate(-5deg);
+    position: fixed;
+    top: -30px;
+    left: -5px;
+    z-index: 0;
+}
+
+.star {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    top: 180px;
+    left: 550px;
+}
+
+.cloud-parent {
+    width: 100%;
+    height: 65%;
+    transform: rotate(-5deg);
+    position: fixed;
+    top: -30px;
+    left: -5px;
+    z-index: 0;
+}
+
+.cloud {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    top: 180px;
+    left: 550px;
+    transform: scale(8);
+}
+
+.cloud svg path {
+    transform: translate(5px, 5px);
 }

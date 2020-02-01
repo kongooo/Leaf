@@ -46,17 +46,50 @@ function init() {
     }
 }
 
+function GetV(day_color, bright, hsv_per, day_per) {
+    let day_hsv = rgb2hsv(day_color);
+    let per;
+    if (bright)
+        per = (day_per - day_stt) / (day_end - day_stt) * (1 - hsv_per) + hsv_per;
+    else
+        per = 1 - (day_per - night_stt) / (night_end - night_stt) * (1 - hsv_per);
+    let v = day_hsv.c * per;
+    return hsv2rgb(new color(day_hsv.a, day_hsv.b, v));
+}
+
 function SetScale(i) {
     let temp_scale = Math.random() * (cl_scale_max - cl_scale_min) + cl_scale_min;
     bodys_ctx[i].scale(temp_scale, temp_scale);
     eyes_ctx[i].scale(temp_scale, temp_scale);
 }
 
+function GetCLColor(color, bright, per) {
 
-function UpdateCLColor(bodys_color, borders_color) {
+    return color2rgb(GetV(rgb2color(color), bright, cl_dark_per, per));
+}
+
+function UpdateCLColor(bright, per) {
     for (let i = 0; i < cl_count; i++) {
-        bodys_ctx[i].strokeStyle = borders_color[i];
-        bodys_ctx[i].fillStyle = bodys_color[i];
+        bodys_ctx[i].strokeStyle = GetCLColor(border_color[i], bright, per);
+        bodys_ctx[i].fillStyle = GetCLColor(body_color[i], bright, per);
+        bodys_ctx[i].fill("evenodd");
+        bodys_ctx[i].stroke();
+    }
+}
+
+function SetCLDrakColor() {
+    for (let i = 0; i < cl_count; i++) {
+        bodys_ctx[i].strokeStyle = border_dark_color[i];
+        bodys_ctx[i].fillStyle = body_dark_color[i];
+        bodys_ctx[i].fill("evenodd");
+        bodys_ctx[i].stroke();
+    }
+}
+
+function SetCLBrightColor() {
+    for (let i = 0; i < cl_count; i++) {
+        bodys_ctx[i].strokeStyle = border_color[i];
+        bodys_ctx[i].fillStyle = body_color[i];
         bodys_ctx[i].fill("evenodd");
         bodys_ctx[i].stroke();
     }
@@ -95,7 +128,6 @@ function ChangeEyeColor(c) {
         eyes_ctx[i].stroke();
     }
 }
-
 
 function GetEyePos(i, mouse_pos) {
     let minus_vector = point_minus(mouse_pos, center_pos[i]);

@@ -1,5 +1,5 @@
 let min_count = 5,
-    max_count = 30;
+    max_count = 20;
 let cl_body_colors = new Array(10),
     cl_borer_colors = new Array(10);
 
