@@ -66,7 +66,7 @@ function SetCloudColor(i, c) {
 function UpdateCloudColor(bright, day_per) {
     let current_color = GetCloudColor(bright, day_per);
     for (let i = 0; i < cloud_count; i++) {
-        SetCloudColor(i, current_color);
+        clouds[i].firstChild.firstChild.setAttribute('fill', current_color);
         cloud_feshadow.floodColor = current_color;
     }
 }

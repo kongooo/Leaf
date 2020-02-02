@@ -63,15 +63,10 @@ function SetScale(i) {
     eyes_ctx[i].scale(temp_scale, temp_scale);
 }
 
-function GetCLColor(color, bright, per) {
-
-    return color2rgb(GetV(rgb2color(color), bright, cl_dark_per, per));
-}
-
 function UpdateCLColor(bright, per) {
     for (let i = 0; i < cl_count; i++) {
-        bodys_ctx[i].strokeStyle = GetCLColor(border_color[i], bright, per);
-        bodys_ctx[i].fillStyle = GetCLColor(body_color[i], bright, per);
+        bodys_ctx[i].strokeStyle = color2rgb(GetV(rgb2color(border_color[i]), bright, cl_dark_per, per));
+        bodys_ctx[i].fillStyle = color2rgb(GetV(rgb2color(body_color[i]), bright, cl_dark_per, per));
         bodys_ctx[i].fill("evenodd");
         bodys_ctx[i].stroke();
     }

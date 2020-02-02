@@ -12,6 +12,16 @@ let speedup = false;
 let speedup_time = 0,
     speedup_interval = 0.002;
 
+function restart() {
+    dark = false,
+        bright = false;
+    speedup = false;
+    ChangeDay(GetDayPercent());
+    day_interval = setInterval(function() {
+        ChangeDay(GetDayPercent());
+    }, 60000);
+}
+
 document.addEventListener('keydown', event => {
     if (event.code == "KeyS") {
         // console.log(speedup_time);
@@ -28,12 +38,7 @@ document.addEventListener('keydown', event => {
 
 document.addEventListener('keyup', event => {
     if (event.code == "KeyS") {
-        console.log('up');
-        speedup = false;
-        ChangeDay(GetDayPercent());
-        day_interval = setInterval(function() {
-            ChangeDay(GetDayPercent());
-        }, 60000);
+        restart();
     }
 })
 

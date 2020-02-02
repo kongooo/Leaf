@@ -111,3 +111,15 @@ body {
 .cloud svg path {
     transform: translate(5px, 5px);
 }
+
+.star-round {
+    width: 0;
+    height: 0;
+    border: 0px solid rgb(255, 250, 222);
+    border-radius: 1px;
+    background-color: rgb(255, 250, 222);
+    box-shadow: 0 0 1px 1px rgb(255, 250, 222);
+    position: absolute;
+    top: 100px;
+    left: 100px;
+}

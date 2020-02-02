@@ -81,8 +81,18 @@ function ApplyDay(sky_color, ground_color, leaf_color, e_color) {
     ChangeEyeColor(eye_current);
 }
 
-function GetEyeColor(e_color, bright, per) {
-    return color2rgb(GetV(rgb2color(e_color), bright, cl_dark_per, per));
+function SetDayDarkColor() {
+    sky_c = sky_dark;
+    ground_c = ground_dark;
+    leaf_c = leaf_dark;
+    eye_c = eye_dark_color;
+}
+
+function SetDayBrightColor() {
+    sky_c = sky_bright;
+    ground_c = ground_bright;
+    leaf_c = leaf_bright;
+    eye_c = eye_color;
 }
 
 let sky_c,
@@ -90,59 +100,50 @@ let sky_c,
     leaf_c,
     eye_c;
 
+let dark = false,
+    bright = false;
+
 function ChangeDay(per) {
-    let change = false;
-    if (per <= day_stt) {
-        sky_c = sky_dark;
-        ground_c = ground_dark;
-        leaf_c = leaf_dark;
-        eye_c = eye_dark_color;
-        ApplyDay(sky_c, ground_c, leaf_c, eye_c);
-        SetCloudTransparent();
-        SetCLDrakColor();
-        change = false;
-    } else if (per < day_end) {
+    if (per < day_stt || per > night_end) {
+        if (!dark) {
+            SetDayDarkColor();
+            ApplyDay(sky_c, ground_c, leaf_c, eye_c);
+            SetCloudTransparent();
+            SetCLDrakColor();
+            dark = true;
+        }
+    } else if (per <= day_end) {
+
         sky_c = GetV(sky_bright, true, sky_per, per);
         ground_c = GetV(ground_bright, true, ground_per, per);
         leaf_c = GetV(leaf_bright, true, leaf_per, per);
-        eye_c = GetEyeColor(eye_color, true, per);
+        eye_c = color2rgb(GetV(rgb2color(eye_color), true, cl_dark_per, per));
+
         UpdateStarColor(true, per);
         UpdateCloudColor(true, per);
         UpdateCLColor(true, per);
-        change = true;
-    } else if (per <= night_stt) {
-        sky_c = sky_bright;
-        ground_c = ground_bright;
-        leaf_c = leaf_bright;
-        eye_c = eye_color;
+
         ApplyDay(sky_c, ground_c, leaf_c, eye_c);
-        SetStarTransparent();
-        SetCloudWhite();
-        SetCLBrightColor();
-        change = false;
-    } else if (per < night_end) {
+    } else if (per < night_stt) {
+        if (!bright) {
+            SetDayBrightColor();
+            ApplyDay(sky_c, ground_c, leaf_c, eye_c);
+            SetStarTransparent();
+            SetCloudWhite();
+            SetCLBrightColor();
+            bright = true;
+        }
+    } else if (per <= night_end) {
+
         sky_c = GetV(sky_bright, false, sky_per, per);
         ground_c = GetV(ground_bright, false, ground_per, per);
         leaf_c = GetV(leaf_bright, false, leaf_per, per);
-        eye_c = GetEyeColor(eye_color, false, per);
+        eye_c = color2rgb(GetV(rgb2color(eye_color), false, cl_dark_per, per));
+
         UpdateStarColor(false, per);
         UpdateCloudColor(false, per);
         UpdateCLColor(false, per);
-        change = true;
-    } else {
-        sky_c = sky_dark;
-        ground_c = ground_dark;
-        leaf_c = leaf_dark;
-        body_color_c = body_dark_color;
-        border_color_c = border_dark_color;
-        eye_c = eye_dark_color;
-        ApplyDay(sky_c, ground_c, leaf_c, eye_c)
-        SetCloudTransparent();
-        SetCLDrakColor();
-        change = false;
-    }
 
-    if (change) {
         ApplyDay(sky_c, ground_c, leaf_c, eye_c);
     }
 

@@ -8,7 +8,8 @@ let shadow_filter = 'url(#shadow)',
     star_min_count_small = 100,
     star_max_count_small = 110,
     star_min_count_big = 20,
-    star_max_count_big = 30;
+    star_max_count_big = 30,
+    round_box_shadow = '0 0 1px 1px rgb(255, 250, 222)';
 
 function CreateSVG() {
     let star_svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
@@ -35,19 +36,32 @@ function CreateStarDiv(min_scale, max_scale) {
 }
 
 function CreateStar() {
-    let count_small = GetRandom(star_min_count_small, star_max_count_small),
-        count_big = GetRandom(star_min_count_big, star_max_count_big),
-        count = count_big + count_small;
-    let stars = new Array(count);
-    for (let i = 0; i < count_small; i++) {
-        stars[i] = CreateStarDiv(0.1, 0.3);
-        stars_parent.appendChild(stars[i]);
-    }
-    for (let i = count_small; i < count; i++) {
-        stars[i] = CreateStarDiv(0.3, 1);
+    let count_big = GetRandom(star_min_count_big, star_max_count_big);
+    let stars = new Array(count_big);
+    for (let i = 0; i < count_big; i++) {
+        stars[i] = CreateStarDiv(0.3, 0.8);
         stars_parent.appendChild(stars[i]);
     }
     return stars;
+}
+
+function CreateRoundDiv() {
+    let star_round = document.createElement('div');
+    star_round.classList.add('star-round');
+    star_round.style.transform = 'scale(' + GetFloatRandom(0.5, 2) + ')';
+    star_round.style.top = GetRandom(0, document.body.clientHeight * 0.65) + 'px';
+    star_round.style.left = GetRandom(0, stars_parent.clientWidth) + 'px';
+    return star_round;
+}
+
+function CreateRound() {
+    let count_small = GetRandom(star_min_count_small, star_max_count_small);
+    let rounds = new Array(count_small);
+    for (let i = 0; i < count_small; i++) {
+        rounds[i] = CreateRoundDiv();
+        stars_parent.appendChild(rounds[i]);
+    }
+    return rounds;
 }
 
 function GetStarPath() {
@@ -60,10 +74,6 @@ function GetStarPath() {
 
 function GetStarColor(i) {
     return (star_path[i].getAttribute('fill'));
-}
-
-function SetStarColor(i, c) {
-    star_path[i].setAttribute('fill', c);
 }
 
 function UpdateRGBA(rgba, a) {
@@ -95,17 +105,31 @@ function UpdateStarColor(bright, day_per) {
     let temp_color;
     for (let i = 0; i < star_count; i++) {
         temp_color = GetStarV(star_colors[i], bright, day_per);
-        SetStarColor(i, temp_color);
+        star_path[i].setAttribute('fill', temp_color);
     }
 }
 
 function SetStarTransparent() {
     for (let i = 0; i < star_count; i++) {
-        SetStarColor(i, 'transparent');
+        star_path[i].setAttribute('fill', 'transparent');
     }
 }
+
+// function SetRoundTransparent() {
+//     for (let i = 0; i < round_count; i++) {
+//         rounds[i].style.boxShadow = 'none';
+//     }
+// }
+
+// function SetRoundColor() {
+//     for (let i = 0; i < round_count; i++) {
+//         rounds[i].style.boxShadow = round_box_shadow;
+//     }
+// }
 
 let stars = CreateStar();
 let star_count = stars.length;
 let star_path = GetStarPath();
 let star_colors = initStarsColor();
+let rounds = CreateRound();
+let round_count = rounds.length;
