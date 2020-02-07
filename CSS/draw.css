@@ -180,32 +180,32 @@ body {
 }
 
 .cl-mama .cl-anima {
-    animation: jump 3s ease 0.7s;
+    animation: jump 3s ease 0.3s;
     animation-iteration-count: infinite;
 }
 
 .cl-mama .cl-anima svg path {
-    animation: jump 3s ease 0.7s;
+    animation: jump 3s ease 0.3s;
     animation-iteration-count: infinite;
 }
 
 .cl-mama .load-shadow {
-    animation: scale 3s linear 0.7s;
+    animation: scale 3s linear 0.3s;
     animation-iteration-count: infinite;
 }
 
 .cl-ko .cl-anima {
-    animation: jump 3s ease 1.4s;
+    animation: jump 3s ease 0.5s;
     animation-iteration-count: infinite;
 }
 
 .cl-ko .cl-anima svg path {
-    animation: jump 3s ease 1.4s;
+    animation: jump 3s ease 0.5s;
     animation-iteration-count: infinite;
 }
 
 .cl-ko .load-shadow {
-    animation: scale 3s linear 1.4s;
+    animation: scale 3s linear 0.5s;
     animation-iteration-count: infinite;
 }
 
