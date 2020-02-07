@@ -209,6 +209,19 @@ body {
     animation-iteration-count: infinite;
 }
 
+.anima-opacity {
+    animation: disappear 1s linear;
+}
+
+@keyframes disappear {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
 @keyframes scale {
     0% {
         transform: rotateX(70deg) scaleX(1.2);
