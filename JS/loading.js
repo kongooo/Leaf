@@ -1,3 +1,3 @@
 window.onload = function() {
-    console.log('complete');
+    document.querySelector('.load-anima').style.display = "none";
 }

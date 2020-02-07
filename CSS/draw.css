@@ -123,3 +123,140 @@ body {
     top: 100px;
     left: 100px;
 }
+
+.load-anima {
+    background-color: white;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    z-index: 5000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cl-mama {
+    transform: scale(0.9) translateY(12px);
+}
+
+.cl-ko {
+    transform: scale(0.5) translateY(97px);
+}
+
+.cl-mama .cl-anima svg path {
+    fill: rgb(245, 212, 222);
+    stroke: rgb(208, 154, 164);
+}
+
+.cl-anima {
+    width: 110px;
+    height: 150px;
+    position: relative;
+    animation: jump 3s ease;
+    /* animation-direction: alternate; */
+    animation-iteration-count: infinite;
+}
+
+.cl-anima svg path {
+    animation: jump 3s ease;
+    /* animation-direction: alternate; */
+    animation-iteration-count: infinite;
+}
+
+.load-shadow {
+    width: 0px;
+    height: 0px;
+    border: 0px solid rgb(184, 184, 184);
+    border-radius: 50%;
+    background-color: rgb(184, 184, 184);
+    box-shadow: 0 0 30px 30px rgb(184, 184, 184);
+    position: relative;
+    margin: 0 auto;
+    bottom: -20px;
+    transform: rotateX(70deg);
+    z-index: -1;
+    animation: scale 3s linear;
+    animation-iteration-count: infinite;
+}
+
+.cl-mama .cl-anima {
+    animation: jump 3s ease 0.7s;
+    animation-iteration-count: infinite;
+}
+
+.cl-mama .cl-anima svg path {
+    animation: jump 3s ease 0.7s;
+    animation-iteration-count: infinite;
+}
+
+.cl-mama .load-shadow {
+    animation: scale 3s linear 0.7s;
+    animation-iteration-count: infinite;
+}
+
+.cl-ko .cl-anima {
+    animation: jump 3s ease 1.4s;
+    animation-iteration-count: infinite;
+}
+
+.cl-ko .cl-anima svg path {
+    animation: jump 3s ease 1.4s;
+    animation-iteration-count: infinite;
+}
+
+.cl-ko .load-shadow {
+    animation: scale 3s linear 1.4s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes scale {
+    0% {
+        transform: rotateX(70deg) scaleX(1.2);
+    }
+    10% {
+        transform: rotateX(70deg) scaleX(1.2);
+        animation-timing-function: cubic-bezier(0.0, 0.0, 0.2, 1.0);
+    }
+    35% {
+        transform: rotateX(70deg) scaleX(0.7);
+        animation-timing-function: cubic-bezier(0.9, 0.0, 1.0, 1.0);
+    }
+    70% {
+        transform: rotateX(70deg) scaleX(1.2);
+    }
+    100% {
+        transform: rotateX(70deg) scaleX(1.2);
+    }
+}
+
+@keyframes jump {
+    0% {
+        transform: rotateX(0deg);
+        top: 100px;
+        d: path("M 5 55         A 50 50 0 0 1 105 55   C 105 67, 95 70, 90, 70  H 20      C 15 70, 5 67, 5 55     Z");
+    }
+    10% {
+        transform: rotateX(40deg);
+        top: 100px;
+        animation-timing-function: cubic-bezier(0.0, 0.0, 0.1, 1.0);
+    }
+    25% {
+        transform: rotateX(0deg);
+    }
+    35% {
+        top: -50px;
+        animation-timing-function: cubic-bezier(0.9, 0.0, 1.0, 1.0);
+    }
+    67% {
+        d: path("M 5 55 A 50 50 0 0 1 105 55     C 105 105, 55 105, 55, 105  H 55     C 5 105, 5 55, 5 55   Z");
+    }
+    70% {
+        top: 100px;
+        d: path("M 5 55         A 50 50 0 0 1 105 55   C 105 67, 95 70, 90, 70  H 20      C 15 70, 5 67, 5 55     Z");
+    }
+    100% {
+        transform: rotateX(0deg);
+        top: 100px;
+        d: path("M 5 55         A 50 50 0 0 1 105 55   C 105 67, 95 70, 90, 70  H 20      C 15 70, 5 67, 5 55     Z");
+    }
+}

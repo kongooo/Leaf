@@ -89,7 +89,7 @@ function CreateCLDiv() {
     cl_temp.classList.add('clannad');
     cl_temp.style.color = cl_body_colors[color_index];
     cl_temp.style.borderColor = cl_borer_colors[color_index];
-    cl_temp.style.transform = "skewY(" + GetRandom(-5, 5) + "deg)";
+    cl_temp.style.transform = "skewY(" + GetRandom(-5, 5) + "deg) " + "rotateX(" + GetRandom(0, 30) + "deg)";
     let temp_pos = GetNewPos();
     cl_temp.style.top = temp_pos.y + 30 + "px";
     cl_temp.style.left = temp_pos.x + "px";
