@@ -29,6 +29,11 @@ body {
     left: 0px;
     box-shadow: 0px 0px 20px 10px rgb(254, 241, 158);
     z-index: 1;
+    transition: box-shadow 1s;
+}
+
+.sun-canvas:hover {
+    box-shadow: 0px 0px 30px 15px rgb(254, 241, 158);
 }
 
 .moon {
@@ -219,6 +224,19 @@ body {
     }
     100% {
         opacity: 0;
+    }
+}
+
+.anima-show {
+    animation: cl-show 1s linear;
+}
+
+@keyframes cl-show {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
     }
 }
 
