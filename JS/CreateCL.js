@@ -93,7 +93,7 @@ function CreateCLDiv() {
     let temp_pos = GetNewPos();
     cl_temp.style.top = temp_pos.y + 30 + "px";
     cl_temp.style.left = temp_pos.x + "px";
-    cl_temp.style.zIndex = temp_pos.y + 30 + (body_center.y + offset) / window.devicePixelRatio;
+    cl_temp.style.zIndex = parseInt(temp_pos.y + 30 + (body_center.y + offset) / window.devicePixelRatio);
     return cl_temp;
 }
 
