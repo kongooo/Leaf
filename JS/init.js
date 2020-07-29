@@ -32,10 +32,6 @@ let leaf_radius = 40,
     leaf_height = 480;
 
 leaf_canvas.style.zIndex = parseInt((document.body.clientHeight - leaf_canvas.clientHeight) / 2 + (leaf_height + y_displace) / window.devicePixelRatio);
-console.log(leaf_canvas.style.zIndex);
-console.log(sun.style.zIndex);
-console.log((document.body.clientHeight - leaf_canvas.clientHeight) / 2 + (leaf_height + y_displace) / window.devicePixelRatio);
-
 
 let my_leaf = {
 

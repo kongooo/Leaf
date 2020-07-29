@@ -115,18 +115,6 @@ function SetStarTransparent() {
     }
 }
 
-// function SetRoundTransparent() {
-//     for (let i = 0; i < round_count; i++) {
-//         rounds[i].style.boxShadow = 'none';
-//     }
-// }
-
-// function SetRoundColor() {
-//     for (let i = 0; i < round_count; i++) {
-//         rounds[i].style.boxShadow = round_box_shadow;
-//     }
-// }
-
 let stars = CreateStar();
 let star_count = stars.length;
 let star_path = GetStarPath();

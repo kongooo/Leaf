@@ -1,7 +1,4 @@
 class color {
-    a;
-    b;
-    c;
     constructor(a, b, c) {
         this.a = a;
         this.b = b;
@@ -10,8 +7,6 @@ class color {
 }
 
 class point {
-    x;
-    y;
     constructor(x, y) {
         this.x = x;
         this.y = y;
@@ -82,22 +77,16 @@ function hsv2rgb(c) {
     switch (i) {
         case 0:
             return new color(v, t, p);
-            break;
         case 1:
             return new color(q, v, p);
-            break;
         case 2:
             return new color(p, v, t);
-            break;
         case 3:
             return new color(p, q, v);
-            break;
         case 4:
             return new color(t, p, v);
-            break;
         case 5:
             return new color(v, p, q);
-            break;
     }
 
     return null;

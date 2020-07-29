@@ -13,8 +13,8 @@ let speedup_time = 0,
     speedup_interval = 0.002;
 
 function restart() {
-    dark = false,
-        bright = false;
+    dark = false;
+    bright = false;
     speedup = false;
     ChangeDay(GetDayPercent());
     day_interval = setInterval(function() {
@@ -42,10 +42,11 @@ document.addEventListener('keyup', event => {
     }
 })
 
+let last, now;
 
-leaf_canvas.addEventListener('mousemove', event => {
+leaf_canvas.addEventListener('mousemove', e => {
     if (!log) {
-        mouse_dir = GetMouseVector(event);
+        mouse_dir = GetMouseVector(event, 1000);
         if (log) {
             UpdateEndPos();
             if (!move) {
@@ -57,6 +58,5 @@ leaf_canvas.addEventListener('mousemove', event => {
                 move = true;
             }
         }
-        count++;
     }
 })

@@ -45,16 +45,17 @@ function LeafMove() {
 }
 
 
-function GetMouseVector(e) {
-    if (count == 0)
-        old_pos = new point(e.pageX, e.pageY);
-    if (count == 1) {
-        new_pos = new point(e.pageX, e.pageY);
-        log = true;
-        count = 0;
-        return point_minus(new_pos, old_pos);
+function GetMouseVector(e, delay) {
+    now = new Date();
+    new_pos = new point(e.pageX, e.pageY);
+    let res;
+    if (last === undefined || (now - last > delay)) {
+        if (new_pos && old_pos) res = point_minus(new_pos, old_pos);
+        if (now - last > delay) log = true;
+        old_pos = new_pos;
+        last = now;
     }
-    return null;
+    return res;
 }
 
 function GetEndPoint(center, dir, dis) {

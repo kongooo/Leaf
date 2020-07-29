@@ -11,7 +11,7 @@ body {
 }
 
 .draw-canvas {
-    height: 500px;
+    height: 550px;
     width: 500px;
     display: block;
     position: fixed;
